@@ -254,5 +254,10 @@ class TestVaultSecrets(TestCase):
             "url": "http://127.0.0.1:8200",
         }
 
-        with six.assertRaisesRegex(self, FileNotFoundError, path):
+        if six.PY2:
+            error_ = IOError
+        else:
+            error_ = FileNotFoundError
+
+        with six.assertRaisesRegex(self, error_, path):
             VaultBackend(**kwargs).get_connections(conn_id='test')
