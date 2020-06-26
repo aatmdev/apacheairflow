@@ -23,6 +23,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import unittest
+import six
 from tests.compat import mock
 
 import pkg_resources
@@ -74,6 +75,7 @@ class PluginsTestRBAC(unittest.TestCase):
         self.assertTrue('test_plugin' in self.app.blueprints)
         self.assertEqual(self.app.blueprints['test_plugin'].name, bp.name)
 
+    @unittest.skipIf(six.PY2, 'self.assertLogs not available for Python 2')
     @mock.patch('pkg_resources.iter_entry_points')
     def test_entrypoint_plugin_errors_dont_raise_exceptions(self, mock_ep_plugins):
         """
